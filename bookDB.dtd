@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding ="UTF-8" ?>
+<!--bookDB.dtd: Database containing books -->
+
+<!ELEMENT bookDB ( book+ )>
+
+<!ENTITY	TP		"Terence Parr">
+<!ENTITY	YDL	"Y. Daniel Liang">
+<!ENTITY	AA		"Andrew Appel">
+
+<!ENTITY % CH "( chapter, description )">
+
+<!ELEMENT book ( author+, image*, content+, newchapters* )>
+<!ATTLIST book bookID ID #REQUIRED>
+<!ELEMENT author ( #PCDATA )>
+<!ELEMENT image ( #PCDATA )>
+
+<!ELEMENT content %CH; >
+<!ELEMENT newchapters %CH; >
+<!ATTLIST newchapters added ( true | false ) "false">
+
+<!ELEMENT chapter ( #PCDATA )>
+<!ATTLIST chapter number CDATA #REQUIRED>
+
+<!ELEMENT description ( section*, resources*, summary? )>
+
+<!ELEMENT section ( #PCDATA )>
+
+<!ELEMENT resources ( #PCDATA )>
+
+<!ELEMENT summary ( #PCDATA )>

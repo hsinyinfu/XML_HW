@@ -1,0 +1,47 @@
+<?xml version = "1.0" ?>
+<!DOCTYPE bookDB SYSTEM "bookDB.dtd" >
+
+<bookDB>
+<book bookID = "ID01">
+	<author>&TP;</author>
+	<content>
+		<chapter number = "1"> hello </chapter>
+		<description></description>
+	</content>
+</book>
+
+<book bookID = "ID02">
+	<author>&YDL;</author>
+	<image>image of Python程式設計入門指南</image>
+	<content>
+		 <chapter number="1">電腦、程式及Python概述</chapter>
+		 <description>
+			<section>a</section>
+		 </description>
+	 </content>
+	 <newchapters added="true">
+		<chapter number = "2">hi</chapter>
+		<description>
+			<section>1</section>
+			<resources>abc</resources>
+		</description>
+	 </newchapters>
+</book>
+
+<book bookID = "ID03">
+	<author>&AA;</author>
+	<image>image of Compiling with Continuations</image>
+	<content>
+		 <chapter number=""></chapter>
+		 <description>
+			<section>123</section>
+			<resources>lsdkfj</resources>
+			<summary>good</summary>
+		 </description>
+	 </content>
+	 <newchapters added="false">
+	 	<chapter number = "3"></chapter>
+		<description></description>
+	 </newchapters>
+ </book>
+ </bookDB>
