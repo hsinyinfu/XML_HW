@@ -1,0 +1,38 @@
+<?xml version = "1.0" ?>
+<!-- letter.xml : Business letter formatted with XML -->
+<!-- Name your  dtd as 'letter.dtd' in the sam edirectory as this document
+        so that this document is valid with respect to it -->
+<!DOCTYPE letter  SYSTEM "letter.dtd" >
+<letter>
+	<contact type = "from">
+		 <name>Jane Doe</name>
+		 <address1>Box 12345</address1>
+		 <address2>15 Any Ave.</address2>
+		 <city>Othertown</city>
+		 <state>Otherstate</state>
+		 <zip>67890</zip>
+		 <phone>555-4321</phone>
+		 <flag gender = "F"/>
+	</contact>
+	<contact type = "to">
+		<name>Jane Doe</name>
+		 <address1>123 Main St.</address1>
+		 <address2></address2>
+		 <city>Anytown</city>
+		<state>Anystate</state>
+		<zip>12345</zip>
+		<phone>555-1234</phone>
+		<flag gender = "M"/>
+	</contact>
+	<salutation>Dear Sir:</salutation>
+	<paragraph>It is our privilege to inform you about our new database managed with <bold>XML</bold>. This new system allows you to reduce the load on your inventory list server by having the client machine perform the work of sorting and filtering the data.</paragraph>
+
+	<paragraph>The data in an XML element is normalized, so plain-text diagrams such as
+	 <pre xml:space='reserved'>
+	 /---\
+	 |      |
+	 \---/
+	 </pre> 	will become gibberish.</paragraph>
+	<closing>Sincerely</closing>
+	<signature>Ms. Doe</signature>
+ </letter>
