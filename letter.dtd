@@ -1,9 +1,11 @@
+<!-- letter ELEMENT-->
 <!ELEMENT letter (contact+,salutation,paragraph+,closing,signature) >
 <!ELEMENT contact (name,address1,address2,city,state,zip,phone,flag) >
 <!ELEMENT salutation (#PCDATA) >
 <!ELEMENT paragraph (#PCDATA|pre|bold)* >
 <!ELEMENT closing (#PCDATA) >
 <!ELEMENT signature (#PCDATA) >
+<!-- contact ELEMENT-->
 <!ELEMENT name (#PCDATA) >
 <!ELEMENT address1 (#PCDATA) >
 <!ELEMENT address2 (#PCDATA)* >
@@ -12,9 +14,11 @@
 <!ELEMENT zip (#PCDATA) >
 <!ELEMENT phone (#PCDATA) >
 <!ELEMENT flag EMPTY >
+<!-- paragraph ELEMENT -->
 <!ELEMENT pre (#PCDATA) >
 <!ELEMENT bold (#PCDATA) >
-
-<!ATTLIST contact type CDATA #REQUIRED >
-<!ATTLIST flag gender CDATA #REQUIRED >
-<!ATTLIST pre xml:space CDATA #REQUIRED >
+<!-- contact attribute -->
+<!ATTLIST contact type (to|from) #REQUIRED >
+<!ATTLIST flag gender (F|M) #REQUIRED >
+<!-- paragraph attribute-->
+<!ATTLIST pre xml:space (default|reserved) "reserved" >
