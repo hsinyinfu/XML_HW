@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<script>
+//JSONFile is an array of objects
+var JSONFile;
+var totalPages;
+var curPage;
+
+function loadDoc(category) {
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			JSONFile = JSON.parse(this.responseText);
+			totalPages = computeTotalPages();
+			curPage = 1;
+			displayFile();
+		}
+	};
+	xhttp.open("GET", 
+		"http://140.119.162.188:2017/today/json/category"+category+".json", 
+		true);
+	xhttp.send();
+}
+
+function displayFile(page = 1){
+	createTable(JSONFile[page-1]);
+	document.getElementById("currentPage").innerHTML = curPage + "/" 
+		+ totalPages ;
+}
+
+function createTable(actJSONObj){
+	var table = document.getElementById("oneActDetail");
+	//	var tObj = table.tBodies[0];
+	for( key in actJSONObj){
+		if( typeof(actJSONObj[key]) === "object" ){ //value is an array
+			if( actJSONObj[key].length === 0 ){ //array is empty
+				continue;
+			}
+			else{ //array is not empty
+				if( typeof(actJSONObj[key][0] === object ){ //array contains objects
+					if( key === "showInfo" ){
+						document.getElementById("infoHeader").innerHTML = "活動場次資訊";
+						var showInfoTable = document.getElementById("showInfo");
+						//var infoTObj = showInfoTable.tBodies[0];
+						var row; 
+						var cell; 
+						for(infoEle=0; infoEle < actJSONObj[key].length; infoEle++){
+							row = document.createElement("tr");
+							for(infoKey in actJSONObj[key][infoEle]){
+								cell = document.createElement("td");
+								cell.innerHTML = infoKey;
+								row.appendChild(cell);
+								cell = document.createElement("td");
+								cell.innerHTML = actJSONObj[key][infoEle][infoKey];
+								row.appendChild(cell);
+							}
+							showInfoTable.appendChild(row);
+						}
+					}
+					else{
+						alert("array contains objects but not showInfo");
+					}
+				}
+					else{ //array contains strings
+						var row = document.createElement("tr");
+						var cell = document.createElement("td");
+						var content = "";
+						cell.innerHTML = key;
+						row.appendChild(cell);
+						cell = document.createElement("td");
+						for( ele=0; ele<actJSONObj[key].length; ele++ ){
+							content += actJSONObj[key][ele];
+						}
+						cell.innerHTML = content;
+						row.appendChild(cell);
+						table.appendChild(row);
+						//tObj.appendChild(row);
+					}
+			}
+		}
+		else{ // value is a string
+			var row = document.createElement("tr");
+			var cell = document.createElement("td");
+			cell.innerHTML = key;
+			row.appendChild(cell);
+			cell = document.createElement("td");
+			cell.innerHTML = actJSONObj[key];
+			row.appendChild(cell);
+			table.appendChild(row);
+			//tObj.appendChild(row);
+		}
+	}
+}
+
+function computeTotalPages(){
+	return JSONFile.length;
+}
+
+function createSelectForm(){
+	var select = document.getElementById("pageAndActivity");
+	for(i=0; i<JSONFile.length; i++){
+		var option = document.createElement("option");
+		option.setAttribute("value",String(i+1));
+		option.innerHTML = JSONFile[i]["title"];
+		select.appendChild(option);
+	}
+}
+
+function selectChange(selectValue){
+	var page = Number(selectValue)
+	resetTables();
+	curPage = page;
+	displayFile(page);
+}
+
+function resetTables(){
+	var table = document.getElementById("oneActDetail");
+	var infoTable = document.getElementById("showInfo");
+	while(table.rows.length != 0){
+		table.deleteRow(0);
+	}
+	while(infoTable.rows.length != 0){
+		infoTable.deleteRow(0);
+	}
+}
+		</script>
+	<div>
+		<h1 onclick="loadDoc(1)">category 1</h1>
+		<h1 onclick="loadDoc(2)">category 2</h1>
+		<h1 onclick="loadDoc(3)">category 3</h1>
+		<h1 onclick="loadDoc(4)">category 4 </h1>
+		<h1 onclick="loadDoc(5)">category 5</h1>
+		<h1 onclick="loadDoc(6)">category 6</h1>
+		<h1 onclick="loadDoc(7)">category 7</h1>
+		<h1 onclick="loadDoc(8)">category 8</h1>
+		<h1 onclick="loadDoc(11)">category 11</h1>
+		<h1 onclick="loadDoc(13)">category 13</h1>
+		<h1 onclick="loadDoc(14)">category 14</h1>
+		<h1 onclick="loadDoc(15)">category 15</h1>
+		<h1 onclick="loadDoc(16)">category 16</h1>
+		<h1 onclick="loadDoc(17)">category 17</h1>
+		<h1 onclick="loadDoc(19)">category 19</h1>
+	</div>
+	<hr>
+	<div id="activities">
+		<table id="oneActDetail"></table>
+		<h3 id="infoHeader"></h3>
+		<table id="showInfo"></table>
+
+		<a>目前在第</a>
+		<a id="currentPage"></a>
+		<a>頁</a>
+
+		<form>
+			請選擇活動：
+			<select id="pageAndActivity" size="1" 
+								onchange="selectChange(this.options[this.selectedIndex].value)"></select>
+			<option value="initial">請選擇</option>
+		</form>
+	</div>
+	</body>
+</html>
