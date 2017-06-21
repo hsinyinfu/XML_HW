@@ -18,7 +18,9 @@ function loadDoc(category) {
 			JSONFile = JSON.parse(this.responseText);
 			totalPages = computeTotalPages();
 			curPage = 1;
+			resetTables();
 			displayFile();
+			createSelectForm();
 		}
 	};
 	xhttp.open("GET", 
@@ -35,26 +37,29 @@ function displayFile(page = 1){
 
 function createTable(actJSONObj){
 	var table = document.getElementById("oneActDetail");
-	//	var tObj = table.tBodies[0];
-	for( key in actJSONObj){
-		if( typeof(actJSONObj[key]) === "object" ){ //value is an array
+	for(key in actJSONObj){
+		if( actJSONObj[key] instanceof Array ){ //value is an array
 			if( actJSONObj[key].length === 0 ){ //array is empty
 				continue;
 			}
 			else{ //array is not empty
-				if( typeof(actJSONObj[key][0] === object ){ //array contains objects
-					if( key === "showInfo" ){
+				if( actJSONObj[key][0] instanceof Object ){ //array contains objects
+					if( key === "showInfo" && actJSONObj[key].length > 0){
 						document.getElementById("infoHeader").innerHTML = "活動場次資訊";
 						var showInfoTable = document.getElementById("showInfo");
-						//var infoTObj = showInfoTable.tBodies[0];
-						var row; 
-						var cell; 
+						var row , cell , header;
+
+						row = document.createElement("tr");
+						for(infoKey in actJSONObj[key][0]){
+							header = document.createElement("th");
+							header.innerHTML = infoKey;
+							row.appendChild(header);
+						}
+						showInfoTable.appendChild(row);
+
 						for(infoEle=0; infoEle < actJSONObj[key].length; infoEle++){
 							row = document.createElement("tr");
 							for(infoKey in actJSONObj[key][infoEle]){
-								cell = document.createElement("td");
-								cell.innerHTML = infoKey;
-								row.appendChild(cell);
 								cell = document.createElement("td");
 								cell.innerHTML = actJSONObj[key][infoEle][infoKey];
 								row.appendChild(cell);
@@ -66,21 +71,23 @@ function createTable(actJSONObj){
 						alert("array contains objects but not showInfo");
 					}
 				}
-					else{ //array contains strings
-						var row = document.createElement("tr");
-						var cell = document.createElement("td");
-						var content = "";
-						cell.innerHTML = key;
-						row.appendChild(cell);
-						cell = document.createElement("td");
-						for( ele=0; ele<actJSONObj[key].length; ele++ ){
-							content += actJSONObj[key][ele];
-						}
-						cell.innerHTML = content;
-						row.appendChild(cell);
-						table.appendChild(row);
-						//tObj.appendChild(row);
+				else if(typeof actJSONObj[key][0] === "string"){ //array contains strings
+					var row = document.createElement("tr");
+					var cell = document.createElement("td");
+					var content = "";
+					cell.innerHTML = key;
+					row.appendChild(cell);
+					cell = document.createElement("td");
+					for( ele=0; ele<actJSONObj[key].length; ele++ ){
+						content += actJSONObj[key][ele];
 					}
+					cell.innerHTML = content;
+					row.appendChild(cell);
+					table.appendChild(row);
+				}
+				else{
+					alert("array contains neither objects nor strings");
+				}
 			}
 		}
 		else{ // value is a string
@@ -127,10 +134,11 @@ function resetTables(){
 	while(infoTable.rows.length != 0){
 		infoTable.deleteRow(0);
 	}
+	document.getElementById("infoHeader").innerHTML = "";
 }
 		</script>
 	<div>
-		<h1 onclick="loadDoc(1)">category 1</h1>
+		<h1 onclick="loadDoc(1)">category1</h1>
 		<h1 onclick="loadDoc(2)">category 2</h1>
 		<h1 onclick="loadDoc(3)">category 3</h1>
 		<h1 onclick="loadDoc(4)">category 4 </h1>
@@ -158,8 +166,7 @@ function resetTables(){
 
 		<form>
 			請選擇活動：
-			<select id="pageAndActivity" size="1" 
-								onchange="selectChange(this.options[this.selectedIndex].value)"></select>
+			<select id="pageAndActivity" size="1" onchange="selectChange(this.options[this.selectedIndex].value)"></select>
 			<option value="initial">請選擇</option>
 		</form>
 	</div>
