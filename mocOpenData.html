@@ -20,6 +20,7 @@ function loadDoc(category) {
 			curPage = 1;
 			resetTables();
 			displayFile();
+			resetSelectForm();
 			createSelectForm();
 		}
 	};
@@ -118,6 +119,15 @@ function createSelectForm(){
 	}
 }
 
+function resetSelectForm(){
+	var select = document.getElementById("pageAndActivity");
+	var i;
+	while(select.childNodes.length > 0){
+		var ele = select.firstChild;
+		select.removeChild(ele);
+	}
+}
+
 function selectChange(selectValue){
 	var page = Number(selectValue)
 	resetTables();
@@ -166,8 +176,8 @@ function resetTables(){
 
 		<form>
 			請選擇活動：
-			<select id="pageAndActivity" size="1" onchange="selectChange(this.options[this.selectedIndex].value)"></select>
-			<option value="initial">請選擇</option>
+			<select id="pageAndActivity" size="1"
+								onchange="selectChange(this.options[this.selectedIndex].value)"></select>
 		</form>
 	</div>
 	</body>
