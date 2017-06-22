@@ -36,6 +36,74 @@ function displayFile(page = 1){
 		+ totalPages ;
 }
 
+function convertTableFieldFromEnglishToChinese(field){
+	if(field === "version"){
+		return "發行版本";
+	} else if(field === "UID"){
+		return "唯一識別碼";
+	} else if(field === "title"){
+		return "活動名稱";
+	} else if(field === "category"){
+		return "活動類別";
+	} else if(field === "showUnit"){
+		return "演出單位";
+	} else if(field === "discountInfo"){
+		return "折扣資訊";
+	} else if(field === "descriptionFilterHtml"){
+		return "簡介說明";
+	} else if(field === "imageUrl"){
+		return "圖片連結";
+	} else if(field === "masterUnit"){
+		return "主辦單位";
+	} else if(field === "subUnit"){
+		return "協辦單位";
+	} else if(field === "supportUnit"){
+		return "贊助單位";
+	} else if(field === "otherUnit"){
+		return "其他單位";
+	} else if(field === "webSales"){
+		return "售票單位";
+	} else if(field === "sourceWebPromote"){
+		return "來源網站網址";
+	} else if(field === "comment"){
+		return "備註";
+	} else if(field === "editModifyDate"){
+		return "編輯時間";
+	} else if(field === "startDate"){
+		return "活動起始日期";
+	} else if(field === "endDate"){
+		return "活動結束日期";
+	} else if(field === "status"){
+		return "status";
+	} else if(field === "total"){
+		return "total";
+	} else if(field === "hitRate"){
+		return "hitRate";
+	} else if(field === "showInfo"){
+		return "活動場次資訊";
+	} else if(field === "time"){
+		return "單場次演出時間";
+	} else if(field === "location"){
+		return "地址";
+	} else if(field === "locationName"){
+		return "場地名稱";
+	} else if(field === "onSales"){
+		return "是否售票";
+	} else if(field === "price"){
+		return "售票說明";
+	} else if(field === "longitude"){
+		return "經度";
+	} else if(field === "latitude"){
+		return "緯度";
+	} else if(field === "masterUnitUrl"){
+		return "主辦單位網址";
+	} else if(field === "sourceWebName"){
+		return "來源網站名稱";
+	} else if(field === "endTime"){
+		return "單場次結束時間";
+	} else{ alert("no corresponding field name:" + field); }
+}
+
 function createTable(actJSONObj){
 	var table = document.getElementById("oneActDetail");
 	for(key in actJSONObj){
@@ -53,7 +121,8 @@ function createTable(actJSONObj){
 						row = document.createElement("tr");
 						for(infoKey in actJSONObj[key][0]){
 							header = document.createElement("th");
-							header.innerHTML = infoKey;
+							header.innerHTML =
+								convertTableFieldFromEnglishToChinese(infoKey);
 							row.appendChild(header);
 						}
 						showInfoTable.appendChild(row);
@@ -76,7 +145,7 @@ function createTable(actJSONObj){
 					var row = document.createElement("tr");
 					var cell = document.createElement("td");
 					var content = "";
-					cell.innerHTML = key;
+					cell.innerHTML = convertTableFieldFromEnglishToChinese(key);
 					row.appendChild(cell);
 					cell = document.createElement("td");
 					for( ele=0; ele<actJSONObj[key].length; ele++ ){
@@ -94,7 +163,7 @@ function createTable(actJSONObj){
 		else{ // value is a string
 			var row = document.createElement("tr");
 			var cell = document.createElement("td");
-			cell.innerHTML = key;
+			cell.innerHTML = convertTableFieldFromEnglishToChinese(key);
 			row.appendChild(cell);
 			cell = document.createElement("td");
 			cell.innerHTML = actJSONObj[key];
@@ -128,11 +197,16 @@ function resetSelectForm(){
 	}
 }
 
-function selectChange(selectValue){
-	var page = Number(selectValue)
+function contentSelectChange(selectValue){
+	var page = Number(selectValue);
 	resetTables();
 	curPage = page;
 	displayFile(page);
+}
+
+function categorySelectChange(selectValue){
+	var category = Number(selectValue);
+	loadDoc(selectValue);
 }
 
 function resetTables(){
@@ -147,38 +221,48 @@ function resetTables(){
 	document.getElementById("infoHeader").innerHTML = "";
 }
 		</script>
-	<div>
-		<h1 onclick="loadDoc(1)">category1</h1>
-		<h1 onclick="loadDoc(2)">category 2</h1>
-		<h1 onclick="loadDoc(3)">category 3</h1>
-		<h1 onclick="loadDoc(4)">category 4 </h1>
-		<h1 onclick="loadDoc(5)">category 5</h1>
-		<h1 onclick="loadDoc(6)">category 6</h1>
-		<h1 onclick="loadDoc(7)">category 7</h1>
-		<h1 onclick="loadDoc(8)">category 8</h1>
-		<h1 onclick="loadDoc(11)">category 11</h1>
-		<h1 onclick="loadDoc(13)">category 13</h1>
-		<h1 onclick="loadDoc(14)">category 14</h1>
-		<h1 onclick="loadDoc(15)">category 15</h1>
-		<h1 onclick="loadDoc(16)">category 16</h1>
-		<h1 onclick="loadDoc(17)">category 17</h1>
-		<h1 onclick="loadDoc(19)">category 19</h1>
+	<div id="category" style="text-align:center">
+		<form>
+			請選擇活動類別：
+			<select id="categorySelect" size="1"
+								onchange="categorySelectChange(this.options[this.selectedIndex].value)">
+				<option value="#">活動類別</option>
+				<option value="1" size="1">Category 1</option>
+				<option value="2" size="1">Category 2</option>
+				<option value="3" size="1">Category 3</option>
+				<option value="4" size="1">Category 4</option>
+				<option value="5" size="1">Category 5</option>
+				<option value="6" size="1">Category 6</option>
+				<option value="7" size="1">Category 7</option>
+				<option value="8" size="1">Category 8</option>
+				<option value="11" size="1">Category 11</option>
+				<option value="13" size="1">Category 13</option>
+				<option value="14" size="1">Category 14</option>
+				<option value="15" size="1">Category 15</option>
+				<option value="16" size="1">Category 16</option>
+				<option value="17" size="1">Category 17</option>
+				<option value="19" size="1">Category 19</option>
+			</select>
+		</form>
 	</div>
 	<hr>
-	<div id="activities">
-		<table id="oneActDetail"></table>
+
+	<div id="activityContent" >
+		<table id="oneActDetail" max-width="1500" border="1" align="center"></table>
 		<h3 id="infoHeader"></h3>
-		<table id="showInfo"></table>
+		<table id="showInfo" max-width="1500" border="1" align="center"></table>
+	</div>
+	
+	<br><hr><br>
 
-		<a>目前在第</a>
-		<a id="currentPage"></a>
-		<a>頁</a>
-
-		<form>
-			請選擇活動：
-			<select id="pageAndActivity" size="1"
-								onchange="selectChange(this.options[this.selectedIndex].value)"></select>
-		</form>
+	<div style="text-align:center;" style="visibility:hidden">
+	<a>目前在第</a>
+	<a id="currentPage"></a>
+	<a>頁</a>
+	<form> 請選擇活動：
+		<select id="pageAndActivity" size="1"
+							onchange="contentSelectChange(this.options[this.selectedIndex].value)"></select>
+	</form>
 	</div>
 	</body>
 </html>
